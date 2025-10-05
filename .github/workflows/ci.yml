@@ -1,0 +1,43 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+  lint-yaml:
+    runs-on: ubuntu-latest
+    needs: checkout
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Lint YAML
+        uses: ibiqlik/action-yamllint@v3
+
+  build:
+    runs-on: ubuntu-latest
+    needs: lint-yaml
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Application
+        run: echo "Build successful"
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Notify
+        run: echo "Workflow finished"
