@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 2               # จำนวน Pod ที่ต้องการให้รันพร้อมกัน
+  selector:
+    matchLabels:
+      app: nginx            # เลือก Pod ที่มี label ตรงนี้มาจัดการ (ต้องตรงกับ template.metadata.labels)
+  template:
+    metadata:
+      labels:
+        app: nginx          # label ของ Pod ที่จะถูกสร้าง
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25-alpine
+          ports:
+            - containerPort: 80
+          # (ออปชัน) เพิ่ม health checks ถ้าต้องการ
+          # readinessProbe:
+          #   httpGet: { path: "/", port: 80 }
+          #   initialDelaySeconds: 3
+          #   periodSeconds: 5
