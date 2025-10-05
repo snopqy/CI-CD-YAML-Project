@@ -55,8 +55,17 @@ jobs:
       - name: K8s manifests dry-run (offline mode)
         run: |
           if [ -d k8s ]; then
-            # ใช้ client-side อย่างเดียว ไม่ต่อคลัสเตอร์
-            kubectl apply --dry-run=client --validate=false --kubeconfig=/dev/null -f k8s/
+            echo "Running offline validation for Kubernetes manifests..."
+            for file in k8s/*.yml; do
+              echo "Validating $file ..."
+              kubectl create --dry-run=client --validate=false --kubeconfig=/dev/null -f "$file" >/dev/null
+              if [ $? -ne 0 ]; then
+                echo "❌ Validation failed for $file"
+                exit 1
+              else
+                echo "✅ $file syntax OK"
+              fi
+            done
           else
             echo "No k8s folder found."
           fi
