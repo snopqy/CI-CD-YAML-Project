@@ -52,10 +52,11 @@ jobs:
         uses: azure/setup-kubectl@v4
         with:
           version: latest
-      - name: K8s manifests dry-run (no server validation)
+      - name: K8s manifests dry-run (offline mode)
         run: |
           if [ -d k8s ]; then
-            kubectl apply --dry-run=client --validate=false -f k8s/
+            # ใช้ client-side อย่างเดียว ไม่ต่อคลัสเตอร์
+            kubectl apply --dry-run=client --validate=false --kubeconfig=/dev/null -f k8s/
           else
             echo "No k8s folder found."
           fi
