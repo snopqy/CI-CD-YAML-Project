@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-nodeport
+  labels:
+    app: nginx
+spec:
+  type: NodePort                 # เปิดพอร์ตที่ระดับ Node เพื่อให้เข้าจากภายนอกคลัสเตอร์ได้
+  selector:
+    app: nginx                   # ผูก Service เข้ากับ Pod ที่มี label ตรงนี้ (จาก Deployment)
+  ports:
+    - name: http
+      port: 80                   # พอร์ตที่ Service เปิดให้ภายในคลัสเตอร์ (ClusterIP)
+      targetPort: 80             # พอร์ตในคอนเทนเนอร์ของ Pod (containerPort)
+      nodePort: 30080            # พอร์ตบน Node (ช่วงที่อนุญาต: 30000–32767)
