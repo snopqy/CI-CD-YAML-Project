@@ -1,0 +1,10 @@
+---
+extends: default
+
+rules:
+  document-start: disable        # ไม่บังคับต้องมี ---
+  line-length:
+    max: 120                     # ยืดความยาวบรรทัดได้ถึง 120 ตัวอักษร
+    level: warning               # ถ้ายาวเกิน แค่เตือน ไม่ fail
+  truthy: disable                # ปิดการเช็กค่าที่เป็น truthy เช่น on: true
+  comments-indentation: disable  # ปิดกฎคอมเมนต์เยื้อง
